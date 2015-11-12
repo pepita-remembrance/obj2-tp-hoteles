@@ -1,4 +1,4 @@
-package ar.edu.unq.obj2.hoteles;
+package ar.edu.unq.obj2.hotels;
 
 public class Location {
     private Country country;

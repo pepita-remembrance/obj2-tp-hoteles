@@ -1,6 +1,6 @@
-package ar.edu.unq.obj2.hoteles.search;
+package ar.edu.unq.obj2.hotels.search;
 
-import ar.edu.unq.obj2.hoteles.Room;
+import ar.edu.unq.obj2.hotels.Room;
 
 import java.util.Collection;
 

@@ -1,4 +1,4 @@
-package ar.edu.unq.obj2.hoteles.repositories;
+package ar.edu.unq.obj2.hotels.repositories;
 
 import java.util.ArrayList;
 import java.util.Collection;
