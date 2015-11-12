@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public abstract class AbstractRepository<T> {
+public abstract class BasicRepository<T> {
 
     private Collection<T> elements = new ArrayList<T>();
 
@@ -17,7 +17,7 @@ public abstract class AbstractRepository<T> {
         return elements.stream().filter(comparator).collect(Collectors.<T>toList());
     }
 
-    public AbstractRepository<T> add(T element) {
+    public BasicRepository<T> add(T element) {
         elements.add(element);
         return this;
     }

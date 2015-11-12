@@ -8,15 +8,15 @@ import java.math.BigDecimal;
 
 public class RoomReservation implements WithPrice {
     private final Room room;
-    private final DayRange days;
+    private final DayRange range;
 
-    public RoomReservation(Room room, DayRange days) {
+    public RoomReservation(Room room, DayRange range) {
         this.room = room;
-        this.days = days;
+        this.range = range;
     }
 
     @Override
     public BigDecimal getPrice() {
-        return null;
+        return room.getPriceFor(range);
     }
 }
