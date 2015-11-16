@@ -5,6 +5,8 @@ import ar.edu.unq.obj2.hotels.payments.PaymentMethod;
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class Hotel {
     private String name;
@@ -51,5 +53,13 @@ public class Hotel {
 
     public Collection<Room> getRooms() {
         return rooms;
+    }
+
+    public Stream<Room> roomsThatSatisfy(Collection<Predicate<Room>> filters) {
+        return getRooms().stream().filter(room -> filters.stream().allMatch(it -> it.test(room)));
+    }
+
+    public boolean isLocatedAt(String place) {
+        return location.isAt(place);
     }
 }

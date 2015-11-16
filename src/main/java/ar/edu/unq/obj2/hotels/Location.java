@@ -1,11 +1,11 @@
 package ar.edu.unq.obj2.hotels;
 
 public class Location {
-    private Country country;
+    private String country;
     private String city;
     private String address;
 
-    public Country getCountry() {
+    public String getCountry() {
         return country;
     }
 
@@ -15,5 +15,9 @@ public class Location {
 
     public String getAddress() {
         return address;
+    }
+
+    public boolean isAt(String place) {
+        return getCity().contains(place) || getAddress().contains(place) || getCountry().contains(place);
     }
 }
