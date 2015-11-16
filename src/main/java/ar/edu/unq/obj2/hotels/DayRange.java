@@ -35,4 +35,8 @@ public class DayRange {
     public LocalDate getLast() {
         return last;
     }
+
+    public boolean overlapsWith(DayRange anotherRange) {
+        return this.days().allMatch(it -> !anotherRange.includes(it));
+    }
 }

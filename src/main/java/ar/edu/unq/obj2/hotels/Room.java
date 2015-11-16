@@ -1,9 +1,12 @@
 package ar.edu.unq.obj2.hotels;
 
 import ar.edu.unq.obj2.hotels.amenities.Amenity;
+import ar.edu.unq.obj2.hotels.exceptions.DomainException;
+import ar.edu.unq.obj2.hotels.reservations.RoomReservation;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +16,7 @@ public class Room {
     private Collection<Amenity> amenities;
     private BigDecimal defaultPrice;
     private final Map<LocalDate,BigDecimal> priceByDay = new HashMap<>();
+    private final Collection<RoomReservation> reservations = new ArrayList<>();
 
     public BigDecimal getPriceFor(LocalDate date){
         return getPriceByDay().getOrDefault(date, getDefaultPrice());
@@ -41,5 +45,20 @@ public class Room {
 
     public Map<LocalDate, BigDecimal> getPriceByDay() {
         return priceByDay;
+    }
+
+    public void addReservationFor(DayRange range) {
+        this.checkRangeAvailable(range);
+        this.reservations.add(new RoomReservation(this, range));
+    }
+
+    private void checkRangeAvailable(DayRange range) {
+        if (!this.isAvailableFor(range)) {
+            throw new DomainException("Room not available for range " + range);
+        }
+    }
+
+    public boolean isAvailableFor(DayRange range) {
+        return this.reservations.stream().allMatch(it -> !it.getRange().overlapsWith(range));
     }
 }
