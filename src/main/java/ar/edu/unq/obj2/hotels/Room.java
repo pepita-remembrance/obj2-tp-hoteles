@@ -47,9 +47,16 @@ public class Room {
         return priceByDay;
     }
 
-    public void addReservationFor(DayRange range) {
-        this.checkRangeAvailable(range);
-        this.reservations.add(new RoomReservation(this, range));
+    public void addReservation(RoomReservation reservation) {
+        this.checkBelongsToThisRoom(reservation);
+        this.checkRangeAvailable(reservation.getRange());
+        this.reservations.add(reservation);
+    }
+
+    private void checkBelongsToThisRoom(RoomReservation reservation) {
+        if (reservation.getRoom() != this) {
+            throw new DomainException("The reservation doesn't belong to this room");
+        }
     }
 
     private void checkRangeAvailable(DayRange range) {
