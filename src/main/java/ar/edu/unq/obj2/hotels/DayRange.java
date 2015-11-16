@@ -19,12 +19,20 @@ public class DayRange {
     }
 
     public boolean includes(LocalDate aDay){
-        return (first.isBefore(aDay) && last.isAfter(aDay)) || first.isEqual(aDay) || last.isEqual(aDay);
+        return (getFirst().isBefore(aDay) && getLast().isAfter(aDay)) || getFirst().isEqual(aDay) || getLast().isEqual(aDay);
     }
 
     public Stream<LocalDate> days(){
         return IntStream
-                .range(0, Period.between(first, last).getDays())
-                .mapToObj(nthDay -> LocalDate.from(first).plusDays(nthDay));
+                .range(0, Period.between(getFirst(), getLast()).getDays())
+                .mapToObj(nthDay -> LocalDate.from(getFirst()).plusDays(nthDay));
+    }
+
+    public LocalDate getFirst() {
+        return first;
+    }
+
+    public LocalDate getLast() {
+        return last;
     }
 }

@@ -15,7 +15,7 @@ public class Room {
     private final Map<LocalDate,BigDecimal> priceByDay = new HashMap<>();
 
     public BigDecimal getPriceFor(LocalDate date){
-        return priceByDay.getOrDefault(date, defaultPrice);
+        return getPriceByDay().getOrDefault(date, getDefaultPrice());
     }
 
     public BigDecimal getPriceFor(DayRange range){
@@ -23,8 +23,23 @@ public class Room {
     }
 
     public Room setPriceFor(LocalDate date, double price){
-        priceByDay.put(date, new BigDecimal(price));
+        getPriceByDay().put(date, new BigDecimal(price));
         return this;
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public Collection<Amenity> getAmenities() {
+        return amenities;
+    }
+
+    public BigDecimal getDefaultPrice() {
+        return defaultPrice;
+    }
+
+    public Map<LocalDate, BigDecimal> getPriceByDay() {
+        return priceByDay;
+    }
 }

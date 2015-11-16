@@ -2,11 +2,10 @@ package ar.edu.unq.obj2.hotels.reservations;
 
 import ar.edu.unq.obj2.hotels.DayRange;
 import ar.edu.unq.obj2.hotels.Room;
-import ar.edu.unq.obj2.hotels.WithPrice;
 
 import java.math.BigDecimal;
 
-public class RoomReservation implements WithPrice {
+public class RoomReservation {
     private final Room room;
     private final DayRange range;
 
@@ -15,7 +14,14 @@ public class RoomReservation implements WithPrice {
         this.range = range;
     }
 
-    @Override
+    public DayRange getRange() {
+        return range;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
     public BigDecimal getPrice() {
         return room.getPriceFor(range);
     }

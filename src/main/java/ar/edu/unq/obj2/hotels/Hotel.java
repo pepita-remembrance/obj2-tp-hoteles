@@ -15,4 +15,41 @@ public class Hotel {
     private Calendar checkInHour;
     private Calendar checkOutHour;
     private Collection<PaymentMethod> paymentMethods;
+    private Collection<Room> rooms;
+
+    public String getName() {
+        return name;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public Contact getContactInformation() {
+        return contactInformation;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Collection<Amenity> getAmenities() {
+        return amenities;
+    }
+
+    public Calendar getCheckInHour() {
+        return checkInHour;
+    }
+
+    public Calendar getCheckOutHour() {
+        return checkOutHour;
+    }
+
+    public Collection<PaymentMethod> getPaymentMethods() {
+        return paymentMethods;
+    }
+
+    public Collection<Room> getRooms() {
+        return rooms;
+    }
 }
