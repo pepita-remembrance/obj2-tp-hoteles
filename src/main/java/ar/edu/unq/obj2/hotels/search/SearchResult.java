@@ -10,17 +10,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SearchResult {
-    private Stream<Room> rooms;
+    private Collection<Room> rooms;
 
     public SearchResult(Stream<Room> rooms) {
-        this.rooms = rooms;
+        this.rooms = rooms.collect(Collectors.toList());
     }
 
     public Map<Hotel,List<Room>> groupedByHotel(){
-        return rooms.collect(Collectors.groupingBy(Room::getHotel));
+        return rooms.stream().collect(Collectors.groupingBy(Room::getHotel));
     }
 
     public Collection<Room> rooms(){
-        return rooms.collect(Collectors.toList());
+        return rooms.stream().collect(Collectors.toList());
     }
 }

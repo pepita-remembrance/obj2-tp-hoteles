@@ -11,11 +11,11 @@ public class RoomFilterFactory {
         return (room)-> true;
     }
 
-    public static Predicate<Room> byName(final String hotelName){
+    public static Predicate<Room> nameFilter(final String hotelName){
         return (room)-> room.getHotel().getName().contains(hotelName);
     }
 
-    public static Predicate<Room> byLocation(final String placeName){
+    public static Predicate<Room> locationFilter(final String placeName){
         return (room)-> room.getHotel().isLocatedAt(placeName);
     }
 

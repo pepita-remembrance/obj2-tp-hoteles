@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class BasicRepository<T> {
+public class BasicRepository<T> implements Repository<T> {
 
     private Collection<T> elements = new ArrayList<T>();
 

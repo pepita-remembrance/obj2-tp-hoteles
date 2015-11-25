@@ -3,19 +3,20 @@ package ar.edu.unq.obj2.hotels.search;
 import ar.edu.unq.obj2.hotels.Hotel;
 import ar.edu.unq.obj2.hotels.Room;
 import ar.edu.unq.obj2.hotels.repositories.HotelsRepository;
+import ar.edu.unq.obj2.hotels.repositories.Repository;
 
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class Search {
-    private HotelsRepository hotels;
+    private Repository<Hotel> hotels;
 
-    public Search(HotelsRepository repository) {
-        this.hotels = repository;
+    public Search(Repository<Hotel> hotels) {
+        this.hotels = hotels;
     }
 
-    public static Search over(HotelsRepository repository){
+    public static Search over(Repository<Hotel> repository){
         return new Search(repository);
     }
 

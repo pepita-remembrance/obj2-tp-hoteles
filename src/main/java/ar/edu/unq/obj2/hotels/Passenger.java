@@ -33,10 +33,4 @@ class Reservations {
         return this.all().filter(it -> it.getHotel().isLocatedAt(city));
     }
 
-    public Set<String> allCities() {
-        return this.all()
-                .flatMap(it -> it.getHotel().getLocation().getCity())
-                .collect(Collectors.toSet());
-    }
-
 }
