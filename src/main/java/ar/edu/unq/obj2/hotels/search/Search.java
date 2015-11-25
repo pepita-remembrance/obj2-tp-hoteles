@@ -9,32 +9,17 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class Search {
-    private String hotelOrLocation;
-    private Collection<Predicate<Room>> roomFilters;
+    private HotelsRepository hotels;
 
-    public Stream<Room> perform(HotelsRepository repository) {
-        return repository.all().stream()
-            .filter(this::hotelSatisfy)
-            .flatMap(hotel -> hotel.roomsThatSatisfy(getRoomFilters()));
+    public Search(HotelsRepository repository) {
+        this.hotels = repository;
     }
 
-    private boolean hotelSatisfy(Hotel hotel) {
-        return hotelNameMatchesQuery(hotel) || hotelLocationMatchesQuery(hotel);
+    public static Search over(HotelsRepository repository){
+        return new Search(repository);
     }
 
-    private boolean hotelLocationMatchesQuery(Hotel hotel) {
-        return hotel.isLocatedAt(getHotelOrLocation());
-    }
-
-    private boolean hotelNameMatchesQuery(Hotel hotel) {
-        return hotel.getName().equals(getHotelOrLocation());
-    }
-
-    public String getHotelOrLocation() {
-        return hotelOrLocation;
-    }
-
-    public Collection<Predicate<Room>> getRoomFilters() {
-        return roomFilters;
+    public SearchResult by(Predicate<Room> searchFilter){
+        return new SearchResult(hotels.all().stream().flatMap((hotel)->hotel.getRooms().stream()).filter(searchFilter));
     }
 }

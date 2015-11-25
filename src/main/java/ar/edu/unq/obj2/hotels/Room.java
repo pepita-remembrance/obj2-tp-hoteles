@@ -12,11 +12,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Room {
+
     private int capacity;
-    private Collection<Amenity> amenities;
+    private Collection<Amenity> amenities = new ArrayList<>();;
     private BigDecimal defaultPrice;
+
     private final Map<LocalDate,BigDecimal> priceByDay = new HashMap<>();
     private final Collection<RoomReservation> reservations = new ArrayList<>();
+    private final Hotel hotel;
+
+    public Room(int capacity, Hotel hotel, BigDecimal defaultPrice) {
+        this.capacity = capacity;
+        this.hotel = hotel;
+        this.defaultPrice = defaultPrice;
+    }
 
     public BigDecimal getPriceFor(LocalDate date){
         return getPriceByDay().getOrDefault(date, getDefaultPrice());
@@ -67,5 +76,13 @@ public class Room {
 
     public boolean isAvailableFor(DayRange range) {
         return this.reservations.stream().allMatch(it -> !it.getRange().overlapsWith(range));
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public Boolean hasAmenity(Amenity amenity){
+        return amenities.contains(amenity);
     }
 }

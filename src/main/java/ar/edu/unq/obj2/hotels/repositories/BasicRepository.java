@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class BasicRepository<T> {
 
@@ -13,8 +14,8 @@ public abstract class BasicRepository<T> {
         return elements;
     }
 
-    public Collection<T> filter(Predicate<T> comparator) {
-        return elements.stream().filter(comparator).collect(Collectors.<T>toList());
+    public Stream<T> filter(Predicate<T> comparator) {
+        return elements.stream().filter(comparator);
     }
 
     public BasicRepository<T> add(T element) {
