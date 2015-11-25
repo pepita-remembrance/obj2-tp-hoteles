@@ -12,7 +12,6 @@ import static org.junit.Assert.assertEquals;
 
 public class RoomReservationTest {
 
-
     HotelsFixtures hotelFixtures;
     Room roomToReserve;
 
@@ -23,8 +22,7 @@ public class RoomReservationTest {
     }
 
     @Test(expected=DomainException.class)
-    public void exceptionShoudBeThrownWhenAttemptingToReserveAnAlreadyReservedRoom() {
-
+    public void exceptionShouldBeThrownWhenAttemptingToReserveAnAlreadyReservedRoom() {
         new RoomReservation(roomToReserve, new DayRange(LocalDate.of(2015,12,24), LocalDate.of(2015,12,26)),hotelFixtures.passenger).register();
         new RoomReservation(roomToReserve, new DayRange(LocalDate.of(2015,12,15), LocalDate.of(2015,12,28)),hotelFixtures.passenger).register();
     }

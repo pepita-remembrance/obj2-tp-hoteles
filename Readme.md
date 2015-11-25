@@ -1,5 +1,16 @@
 ## Diseño
 
 
- - La interfaz de un repository es lo suficientemente sencilla como para implementar fake objects
+   ![Diagrama de clases](/documentation/class_diagram.png)
+
+
+### Repository Pattern
+
+
+
+### Composable Search
+
+
+
+
 
