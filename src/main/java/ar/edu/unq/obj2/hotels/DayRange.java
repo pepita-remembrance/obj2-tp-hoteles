@@ -37,7 +37,9 @@ public class DayRange {
     }
 
     public boolean overlapsWith(DayRange anotherRange) {
-        return this.days().allMatch(it -> !anotherRange.includes(it));
+        return (first.isBefore(anotherRange.first) && last.isAfter(anotherRange.first))
+                || (first.isBefore(anotherRange.last) && last.isAfter(anotherRange.last))
+                || (first.isAfter(anotherRange.first) && last.isBefore(anotherRange.last));
     }
 
     public boolean beginsAfter(LocalDate date) {

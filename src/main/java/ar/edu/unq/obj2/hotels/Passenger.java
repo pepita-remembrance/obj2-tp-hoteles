@@ -4,13 +4,22 @@ import ar.edu.unq.obj2.hotels.repositories.ReservationsRepository;
 import ar.edu.unq.obj2.hotels.reservations.RoomReservation;
 
 import java.time.LocalDate;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Passenger {
+
+    Contact contact;
+
     public Reservations reservations(ReservationsRepository repository) {
         return new Reservations(repository.reservationsOf(this));
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 }
 

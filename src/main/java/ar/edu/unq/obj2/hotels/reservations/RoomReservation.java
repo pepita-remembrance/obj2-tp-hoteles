@@ -4,22 +4,28 @@ import ar.edu.unq.obj2.hotels.DayRange;
 import ar.edu.unq.obj2.hotels.Hotel;
 import ar.edu.unq.obj2.hotels.Passenger;
 import ar.edu.unq.obj2.hotels.Room;
+import ar.edu.unq.obj2.hotels.notifications.DummyNotifier;
+import ar.edu.unq.obj2.hotels.notifications.ReservationsNotifier;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class RoomReservation {
     private final DayRange range;
-    private final Hotel hotel;
     private final Room room;
     private final Passenger owner;
-    private final Collection<Passenger> otherOccupants;
+    private final Collection<Passenger> otherOccupants = new ArrayList<>();
+    private ReservationsNotifier notifier = new DummyNotifier();
 
-    public RoomReservation(Room room, DayRange range, Hotel hotel, Passenger owner, Collection<Passenger> otherOccupants) {
+    public RoomReservation(Room room, DayRange range, Passenger owner) {
         this.room = room;
         this.range = range;
-        this.hotel = hotel;
         this.owner = owner;
-        this.otherOccupants = otherOccupants;
+    }
+
+    public RoomReservation usingNotifier(ReservationsNotifier notifier){
+        this.notifier = notifier;
+        return this;
     }
 
     public DayRange getRange() {
@@ -39,6 +45,12 @@ public class RoomReservation {
     }
 
     public Hotel getHotel() {
-        return hotel;
+        return room.getHotel();
     }
+
+    public void register(){
+        room.addReservation(this);
+        notifier.sendNotificationsFor(this);
+    }
+
 }

@@ -26,4 +26,6 @@ public class HotelsFixtures {
     Repository<Hotel> repositoryHotelBasicFixture  =
             new BasicRepository<Hotel>().add(hotelMirador).add(hotelBarato).add(hotelLejano);
 
+    Passenger passenger = new Passenger();
+
 }
