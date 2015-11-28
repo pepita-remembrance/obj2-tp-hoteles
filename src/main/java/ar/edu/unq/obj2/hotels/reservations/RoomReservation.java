@@ -4,8 +4,8 @@ import ar.edu.unq.obj2.hotels.DayRange;
 import ar.edu.unq.obj2.hotels.Hotel;
 import ar.edu.unq.obj2.hotels.Passenger;
 import ar.edu.unq.obj2.hotels.Room;
-import ar.edu.unq.obj2.hotels.notifications.DummyNotifier;
-import ar.edu.unq.obj2.hotels.notifications.ReservationsNotifier;
+import ar.edu.unq.obj2.hotels.notifications.Email;
+import ar.edu.unq.obj2.hotels.notifications.EmailSender;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,7 +15,7 @@ public class RoomReservation {
     private final Room room;
     private final Passenger owner;
     private final Collection<Passenger> otherOccupants = new ArrayList<>();
-    private ReservationsNotifier notifier = new DummyNotifier();
+    private EmailSender notifier = (email)->{};
 
     public RoomReservation(Room room, DayRange range, Passenger owner) {
         this.room = room;
@@ -23,7 +23,7 @@ public class RoomReservation {
         this.owner = owner;
     }
 
-    public RoomReservation usingNotifier(ReservationsNotifier notifier){
+    public RoomReservation usingNotifier(EmailSender notifier){
         this.notifier = notifier;
         return this;
     }
@@ -50,7 +50,11 @@ public class RoomReservation {
 
     public void register(){
         room.addReservation(this);
-        notifier.sendNotificationsFor(this);
+        notifier.send(this.generateEmail());
+    }
+
+    protected Email generateEmail(){
+        return new Email("Enterprise" ,owner.getContact().getEmail(), "Room reservation completed", "");
     }
 
 }

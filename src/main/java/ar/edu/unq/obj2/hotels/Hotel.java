@@ -62,9 +62,6 @@ public class Hotel {
         return rooms;
     }
 
-    public Stream<Room> roomsThatSatisfy(Collection<Predicate<Room>> filters) {
-        return getRooms().stream().filter(room -> filters.stream().allMatch(it -> it.test(room)));
-    }
 
     public boolean isLocatedAt(String place) {
         return location.isAt(place);

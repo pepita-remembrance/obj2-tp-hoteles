@@ -2,24 +2,8 @@ package ar.edu.unq.obj2.hotels.repositories;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class BasicRepository<T> implements Repository<T> {
-
-    private Collection<T> elements = new ArrayList<T>();
-
-    public Collection<T> all() {
-        return elements;
-    }
-
-    public Stream<T> filter(Predicate<T> comparator) {
-        return elements.stream().filter(comparator);
-    }
-
-    public BasicRepository<T> add(T element) {
-        elements.add(element);
-        return this;
-    }
+public abstract class BasicRepository<T> implements Repository<T> {
+    private Collection<T> elements = new ArrayList<>();
+    @Override public Collection<T> all() { return elements; }
 }

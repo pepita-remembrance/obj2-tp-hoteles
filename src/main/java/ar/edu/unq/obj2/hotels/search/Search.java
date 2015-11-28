@@ -2,12 +2,9 @@ package ar.edu.unq.obj2.hotels.search;
 
 import ar.edu.unq.obj2.hotels.Hotel;
 import ar.edu.unq.obj2.hotels.Room;
-import ar.edu.unq.obj2.hotels.repositories.HotelsRepository;
 import ar.edu.unq.obj2.hotels.repositories.Repository;
 
-import java.util.Collection;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class Search {
     private Repository<Hotel> hotels;

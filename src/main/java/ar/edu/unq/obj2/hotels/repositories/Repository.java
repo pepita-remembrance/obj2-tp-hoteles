@@ -8,7 +8,13 @@ public interface Repository<T> {
 
     public Collection<T> all();
 
-    public Stream<T> filter(Predicate<T> comparator);
+    default public Stream<T> filter(Predicate<T> comparator) {
+        return all().stream().filter(comparator);
+    }
 
-    public BasicRepository<T> add(T element);
+    default public Repository<T> save(T element) {
+        all().add(element);
+        return this;
+    }
+
 }
