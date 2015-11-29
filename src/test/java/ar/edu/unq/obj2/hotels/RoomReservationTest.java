@@ -2,6 +2,7 @@ package ar.edu.unq.obj2.hotels;
 
 import ar.edu.unq.obj2.hotels.exceptions.DomainException;
 import ar.edu.unq.obj2.hotels.notifications.senders.SpyEmailSenderProvider;
+import ar.edu.unq.obj2.hotels.payments.PaymentMethod;
 import ar.edu.unq.obj2.hotels.reservations.RoomReservation;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +15,9 @@ import static org.junit.Assert.assertEquals;
 public class RoomReservationTest extends BasicHotelsTest implements SpyEmailSenderProvider {
 
     Room roomToReserve;
-    final DayRange someDateRange        = new DayRange(LocalDate.of(2015, 12, 24), LocalDate.of(2015, 12, 26));
-    final DayRange overlappingDateRange = new DayRange(LocalDate.of(2015, 12, 15), LocalDate.of(2015, 12, 28));
+    final DayRange someDateRange          = new DayRange(LocalDate.of(2015, 12, 24), LocalDate.of(2015, 12, 26));
+    final DayRange overlappingDateRange   = new DayRange(LocalDate.of(2015, 12, 15), LocalDate.of(2015, 12, 28));
+    final PaymentMethod somePaymentMethod = new PaymentMethod();
     SpyEmailSender emailSender;
 
     @Override
@@ -32,8 +34,8 @@ public class RoomReservationTest extends BasicHotelsTest implements SpyEmailSend
 
     @Test(expected=DomainException.class)
     public void exceptionShouldBeThrownWhenAttemptingToReserveAnAlreadyReservedRoom() {
-        new RoomReservation(roomToReserve, someDateRange,        hotelsFixture.passenger).register();
-        new RoomReservation(roomToReserve, overlappingDateRange, hotelsFixture.passenger).register();
+        new RoomReservation(roomToReserve, someDateRange,        hotelsFixture.passenger, somePaymentMethod).register();
+        new RoomReservation(roomToReserve, overlappingDateRange, hotelsFixture.passenger, somePaymentMethod).register();
     }
 
     @Test
@@ -41,7 +43,7 @@ public class RoomReservationTest extends BasicHotelsTest implements SpyEmailSend
         String emailAddress = "some@email.com";
         hotelsFixture.passenger.setContact(new Contact(emailAddress));
         RoomReservation reservation =
-                new RoomReservation(roomToReserve, someDateRange, hotelsFixture.passenger)
+                new RoomReservation(roomToReserve, someDateRange, hotelsFixture.passenger, somePaymentMethod)
                 .usingNotifier(emailSender);
 
         reservation.register();
