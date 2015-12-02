@@ -34,6 +34,9 @@ protected void initializeDependencies() {
 ## Repository Pattern
 
 Un *Repository* es una ambstración sobre un contenedor de objetos de un tipo de terminado.
+Permite encapslular la manera en que se guardan/persisten los objetos.
+Posibles implementaciones podrían ser `CollectionBasedRepository`, `SQLBasedREpository`, `XMLBasedRepository`, `MongoBasedREpository`, etc.
+De manera tal que el usuario de estos repositorios puede abstraerse de cada implementación particular.
 
  - **Single responsibility:** Un repository se encarga únicamente de contener entidades de negocio de un tipo particular permitiendo realizar busquedas sobre estas.
  - **Open/closed:** Para crear un nuevo repository es suficiente con implementar la interfaz `Repository<T>`.
