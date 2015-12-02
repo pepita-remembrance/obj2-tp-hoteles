@@ -64,6 +64,14 @@ Por ejempo:
     }
 ```
 
+Agregando una parametrización de tipos al Search, es posible reutilizarlo para diferentes repositories:
+
+
+```java
+Search.over(reservationsRepository)
+        .by(cityFilter("Bs As"));
+```
+
 La aplicación de los predicados sigue un patrón Composite, ya que pueden componerse jerárquicamente, gracias a que el
 resultado de componer dos predicados es siempre otro predicado del mismo tipo
 
