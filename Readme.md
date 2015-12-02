@@ -45,6 +45,30 @@ Un *Repository*
 
 ## Composable Search
 
+El search realiza la búsqueda sobre un repository, y filtra utilizando `Predicate<T>` de la siguiente manera:
+
+```java
+Search.over(hotelsFixture)
+        .by(nameFilter("Barato").or(locationFilter("Antartida")));
+```
+
+![Predicate](/documentation/predicate.jpg)
+
+Los `Predicate` pueden componerse usando los mensajes `and` y `or`. En este caso, `nameFilter` y `locationFilter` son factories de predicados particulares.
+Por ejempo:
+
+```java
+    public static Predicate<Room> nameFilter(final String hotelName){
+        return (room)-> room.getHotel().getName().contains(hotelName);
+    }
+```
+
+ - **Single responsibility:** El Predicate se encarga únicamente evaluar a un valor de verdad y componerse con otros predicados.
+ - **Open/closed:** Para extender los predicados, alcanza con implementar su interfaz.
+ - **Liskov substitution:** Dos predicados del mismo tipo son siempre intercambiables.
+ - **Interface segregation:** La interfaz se mantiene minimalista y sólo contiene mensajes relacionados con su responsabilidad.
+ - **Dependency inversion:** El tipo paramétrico de `Predicate<T>` permite generalizar el predicado para cualquier tipo, delegando la decisión en sus implementaciones.
+
 
 References:
 
