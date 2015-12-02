@@ -33,7 +33,7 @@ protected void initializeDependencies() {
 
 ## Repository Pattern
 
-Un *Repository*
+Un *Repository* es una ambstración sobre un contenedor de objetos de un tipo de terminado.
 
  - **Single responsibility:** Un repository se encarga únicamente de contener entidades de negocio de un tipo particular permitiendo realizar busquedas sobre estas.
  - **Open/closed:** Para crear un nuevo repository es suficiente con implementar la interfaz `Repository<T>`.
@@ -54,7 +54,8 @@ Search.over(hotelsFixture)
 
 ![Predicate](/documentation/predicate.jpg)
 
-Los `Predicate` pueden componerse usando los mensajes `and` y `or`. En este caso, `nameFilter` y `locationFilter` son factories de predicados particulares.
+Los `Predicate` pueden componerse usando los mensajes `and` y `or`. En este caso, `nameFilter` y `locationFilter` son
+factories de predicados particulares.
 Por ejempo:
 
 ```java
@@ -62,6 +63,9 @@ Por ejempo:
         return (room)-> room.getHotel().getName().contains(hotelName);
     }
 ```
+
+La aplicación de los predicados sigue un patrón Composite, ya que pueden componerse jerárquicamente, gracias a que el
+resultado de componer dos predicados es siempre otro predicado del mismo tipo
 
  - **Single responsibility:** El Predicate se encarga únicamente evaluar a un valor de verdad y componerse con otros predicados.
  - **Open/closed:** Para extender los predicados, alcanza con implementar su interfaz.
