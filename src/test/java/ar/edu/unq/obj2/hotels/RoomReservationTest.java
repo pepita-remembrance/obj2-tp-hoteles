@@ -1,6 +1,7 @@
 package ar.edu.unq.obj2.hotels;
 
 import ar.edu.unq.obj2.hotels.exceptions.DomainException;
+import ar.edu.unq.obj2.hotels.notifications.ReservationEmailNotifier;
 import ar.edu.unq.obj2.hotels.notifications.senders.SpyEmailSenderProvider;
 import ar.edu.unq.obj2.hotels.payments.PaymentMethod;
 import ar.edu.unq.obj2.hotels.reservations.RoomReservation;
@@ -42,10 +43,10 @@ public class RoomReservationTest extends BasicHotelsTest implements SpyEmailSend
     public void notificationShouldBeSentAfterSuccessfulRegistration() {
         String emailAddress = "some@email.com";
         hotelsFixture.passenger.setContact(new Contact(emailAddress));
+        ReservationEmailNotifier reservationEmailNotifier = new ReservationEmailNotifier(emailSender);
         RoomReservation reservation =
-                new RoomReservation(roomToReserve, someDateRange, hotelsFixture.passenger, somePaymentMethod)
-                .usingNotifier(emailSender);
-
+                new RoomReservation(roomToReserve, someDateRange, hotelsFixture.passenger, somePaymentMethod);
+        reservation.addNotifier(reservationEmailNotifier);
         reservation.register();
 
         assertEquals("Room reservation completed", emailSender.email.subject);
