@@ -17,7 +17,6 @@ public class RoomReservation {
     private final Room room;
     private final Passenger owner;
     private final Collection<Passenger> otherOccupants = new ArrayList<>();
-    private EmailSender notifier = (email)->{};
     private Collection<Notifier<RoomReservation>> observers = new ArrayList<>();
     private PaymentMethod paymentMethod;
 
@@ -26,11 +25,6 @@ public class RoomReservation {
         this.range = range;
         this.owner = owner;
         this.paymentMethod = paymentMethod;
-    }
-
-    public RoomReservation usingNotifier(EmailSender notifier){
-        this.notifier = notifier;
-        return this;
     }
 
     public DayRange getRange() {
