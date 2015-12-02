@@ -86,3 +86,25 @@ References:
 
  - [Scalable Component Abstractions](http://lampwww.epfl.ch/~odersky/papers/ScalableComponent.pdf)
 
+## Notificaciones de nuevas reservas
+
+Un requerimiento del sistema es poder enviar correos electrónicos al pasajero y al hotel cada vez que ocurriera una reserva. Para lograr esto, hicimos uso del patrón **Observer**, ya que este es un caso típico de aplicación:
+
+* por un lado tenemos al _sujeto_: la `RoomReservation`, de la cual nos va a interesar notificar sobre el evento de registro. Los objetos que estén interesados en recibir tal notificación deberán implementar una interfaz mínima, con un único mensaje `void sendNotification(RoomReservation reservation)`
+* por el otro tenemos un componente encargado del envío de mails, al cual queremos avisarle de cada registro, pero no nos interesa su funcionamiento (podría enviar los mails en el momento, encolarlos y mandar de lotes de 5, funcionar una vez por día, incluso podría ser simplemente un wrapper de un servicio web, o cualquier otra variante que se nos pueda ocurrir)
+
+Al elegir este patrón no sólo ganamos en desacoplamiento, sino que también logramos que nuestro código sea más fácil de testear. Si la idea de registrar una reserva y enviar un mail estuvieran acopladas, para poder probar deberíamos chequear que el mail _realmente_ fue enviado, involucrando un montón de cuestiones técnicas sobre el dominio de los correos electrónicos que no hacen más que estorbar y desviarnos de nuestro objetivo: probar que la reserva envia una notificación (sin tener en cuenta cuestiones como el tiempo que tardaría dicho test, la probabilidad de un falso negativo por problemas de red, etc).
+
+Todos estos problemas desaparecen con nuestra implementación, ya que testear la notificación se vuelve trivial: basta con crear un **espía**, que implemente la interfase `Notifier` y registre las notificaciones que vaya recibiendo. El test quedaría así:
+
+```java
+@Test
+public void theRoomNotifiesItsRegistration() {
+    roomReservation.addNotifier(spyNotifier);
+    roomReservation.register();
+
+    assertTrue(spyNotifier.validateWasCalledWith(roomReservation));
+}
+```
+
+Como la reserva no necesita saber nada de los _interesados_, basta con un espía, ya que únicamente nos interesa validar que la acción fue realizada.
