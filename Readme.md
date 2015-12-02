@@ -31,6 +31,11 @@ protected void initializeDependencies() {
  - **Interface segregation:** Cada provider posee un único mensaje específico para el componente que permite instanciar.
  - **Dependency inversion:** Cada provider depende sólo de interfaces sin default methods.
 
+References:
+
+ - [Scalable Component Abstractions](http://lampwww.epfl.ch/~odersky/papers/ScalableComponent.pdf)
+
+
 ## Repository Pattern
 
 Un *Repository* es una ambstración sobre un contenedor de objetos de un tipo de terminado.
@@ -84,10 +89,6 @@ resultado de componer dos predicados es siempre otro predicado del mismo tipo
  - **Interface segregation:** La interfaz se mantiene minimalista y sólo contiene mensajes relacionados con su responsabilidad.
  - **Dependency inversion:** El tipo paramétrico de `Predicate<T>` permite generalizar el predicado para cualquier tipo, delegando la decisión en sus implementaciones.
 
-
-References:
-
- - [Scalable Component Abstractions](http://lampwww.epfl.ch/~odersky/papers/ScalableComponent.pdf)
 
 ## Notificaciones de nuevas reservas
 
