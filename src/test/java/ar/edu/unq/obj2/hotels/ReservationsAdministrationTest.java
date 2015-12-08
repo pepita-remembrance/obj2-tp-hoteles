@@ -1,12 +1,13 @@
 package ar.edu.unq.obj2.hotels;
 
-import ar.edu.unq.obj2.hotels.exceptions.DomainException;
 import ar.edu.unq.obj2.hotels.notifications.EmailSender;
 import ar.edu.unq.obj2.hotels.notifications.senders.DummyEmailSenderProvider;
 import ar.edu.unq.obj2.hotels.payments.PaymentMethod;
-import ar.edu.unq.obj2.hotels.reservations.RoomReservation;
+import ar.edu.unq.obj2.hotels.search.Search;
 import org.junit.Before;
 import org.junit.Test;
+import static ar.edu.unq.obj2.hotels.search.ReservationFilterFactory.*;
+import static ar.edu.unq.obj2.hotels.search.ProjectionsFactory.*;
 
 import java.time.LocalDate;
 
@@ -17,6 +18,7 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
     final DayRange overlappingDateRange   = new DayRange(LocalDate.of(2015, 12, 15), LocalDate.of(2015, 12, 28));
     final PaymentMethod somePaymentMethod = new PaymentMethod();
     EmailSender emailSender;
+
 
     @Override
     protected void initializeDependencies() {
@@ -30,10 +32,9 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
         roomToReserve = hotelsFixture.hotelBarato.getRooms().stream().findFirst().get();
     }
 
-    @Test(expected=DomainException.class)
-    public void exceptionShouldBeThrownWhenAttemptingToReserveAnAlreadyReservedRoom() {
-        new RoomReservation(roomToReserve, someDateRange,        hotelsFixture.passenger, somePaymentMethod).register();
-        new RoomReservation(roomToReserve, overlappingDateRange, hotelsFixture.passenger, somePaymentMethod).register();
+    @Test
+    public void aPassengerCanSearchForHisReservations() {
+        Search.over(hotelsFixture).select(reservations).where(belongsTo(hotelsFixture.passenger));
     }
 
 

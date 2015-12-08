@@ -85,4 +85,8 @@ public class Room {
     public Boolean hasAmenity(Amenity amenity){
         return amenities.contains(amenity);
     }
+
+    public Collection<RoomReservation> getReservations() {
+        return reservations;
+    }
 }
