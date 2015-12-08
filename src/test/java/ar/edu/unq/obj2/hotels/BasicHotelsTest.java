@@ -5,6 +5,7 @@ import ar.edu.unq.obj2.hotels.doubles.FixtureHotelRepository;
 import ar.edu.unq.obj2.hotels.repositories.BasicReservationsRepositoryProvider;
 import ar.edu.unq.obj2.hotels.repositories.Repository;
 import ar.edu.unq.obj2.hotels.reservations.RoomReservation;
+import org.junit.After;
 import org.junit.Before;
 
 public abstract class BasicHotelsTest  extends BasicService

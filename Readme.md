@@ -112,3 +112,32 @@ public void theRoomNotifiesItsRegistration() {
 ```
 
 Como la reserva no necesita saber nada de los _interesados_, basta con un espía, ya que únicamente nos interesa validar que la acción fue realizada.
+
+
+## Tests
+
+### Implicit Setup & Testcase Superclass
+
+La superclase abstracta `BasicHotelsTest` inicializa fixtures comunes a todos los tests.
+
+### Test Discovery
+
+JUnit descubre los tests a correr analizando sus annotations.
+
+
+### Test Doubles
+
+#### Spy
+
+El `SpyEmailSender` es un ejemplo de `Spy Test`, en el cual en lugar de enviarse el `Email`,
+el spy se lo guarda para posterior chequeo.
+
+#### Stub
+
+El `FixtureHotelRepository` es un ejemplo de `Stub Test`, en donde el repository responde con datos
+predefinidos mediante un fixture.
+
+#### Dummy
+
+El `DummyEmailSenderProvider` provee una implementación de `EmailSender` tal que no tiene comportamiento alguno, y es
+usado únicamente para cumplir con los contratos que requieran un `EmailSender`.
