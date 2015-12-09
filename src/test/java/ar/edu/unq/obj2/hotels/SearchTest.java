@@ -3,18 +3,15 @@ package ar.edu.unq.obj2.hotels;
 import ar.edu.unq.obj2.hotels.notifications.senders.DummyEmailSenderProvider;
 import ar.edu.unq.obj2.hotels.search.Search;
 import ar.edu.unq.obj2.hotels.search.SearchResult;
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
-import static org.hamcrest.CoreMatchers.*;
+import static ar.edu.unq.obj2.hotels.search.ProjectionsFactory.rooms;
 import static ar.edu.unq.obj2.hotels.search.RoomFilterFactory.locationLike;
 import static ar.edu.unq.obj2.hotels.search.RoomFilterFactory.nameLike;
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.junit.Assert.*;
-import static ar.edu.unq.obj2.hotels.search.ProjectionsFactory.*;
 
 public class SearchTest extends BasicHotelsTest implements
         DummyEmailSenderProvider {
