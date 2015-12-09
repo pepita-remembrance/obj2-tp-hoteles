@@ -36,6 +36,7 @@ public interface FixtureHotelRepository extends HotelRepositoryProvider {
                 ;
 
         public final Room habitacionBarata = new Room(2, hotelBarato, new BigDecimal(20));
+        public final Room habitacionCara = new Room(2, hotelMirador, new BigDecimal(2000));
 
         public final Hotel hotelLejano = new Hotel("Lejano", new Location("AR", "Antartida", ""))
                 .addBasicRoom(2, 200)
@@ -53,8 +54,10 @@ public interface FixtureHotelRepository extends HotelRepositoryProvider {
             this.hotels.add(this.hotelBarato);
             this.hotels.add(this.hotelLejano);
             hotelBarato.getRooms().add(habitacionBarata);
+            hotelMirador.getRooms().add(habitacionCara);
             someReservation = new RoomReservation(habitacionBarata, someDateRange, passenger, somePaymentMethod);
             someReservation.register();
+
         }
 
         @Override

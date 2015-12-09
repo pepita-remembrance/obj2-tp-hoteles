@@ -41,6 +41,23 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
 
     }
 
+    @Test
+    public void aPassangerCanSearchAlFutureReservationsGivenACurrentDate() {
+        DayRange  futureReservationDate = new DayRange(LocalDate.of(2016, 1, 1), LocalDate.of(2016, 1, 25));
+        LocalDate today = LocalDate.of(2015, 12, 25);
+
+        RoomReservation futureReservation = new RoomReservation(hotelsFixture.habitacionCara,futureReservationDate, hotelsFixture.passenger, hotelsFixture.somePaymentMethod);
+        futureReservation.register();
+
+        SearchResult<RoomReservation> result =
+                Search.over(hotelsFixture).select(reservations).where(
+                        belongsTo(hotelsFixture.passenger).and(isAfter(today))
+                );
+
+        assertEquals(futureReservation, result.items().stream().findFirst().get());
+
+    }
+
 
 
 }
