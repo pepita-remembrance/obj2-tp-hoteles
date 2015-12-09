@@ -2,7 +2,6 @@ package ar.edu.unq.obj2.hotels;
 
 import ar.edu.unq.obj2.hotels.notifications.EmailSender;
 import ar.edu.unq.obj2.hotels.notifications.senders.DummyEmailSenderProvider;
-import ar.edu.unq.obj2.hotels.payments.PaymentMethod;
 import ar.edu.unq.obj2.hotels.reservations.RoomReservation;
 import ar.edu.unq.obj2.hotels.search.Search;
 import ar.edu.unq.obj2.hotels.search.SearchResult;
@@ -18,6 +17,7 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
 
     Room roomToReserve;
     EmailSender emailSender;
+    RoomReservation futureReservation;
     private final LocalDate today = LocalDate.of(2015, 12, 25);
     private final DayRange  futureReservationDate = new DayRange(LocalDate.of(2016, 1, 1), LocalDate.of(2016, 1, 25));
 
@@ -32,6 +32,7 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
     public void setUp(){
         super.setUp();
         roomToReserve = hotelsFixture.hotelBarato.getRooms().stream().findFirst().get();
+        futureReservation = new RoomReservation(hotelsFixture.habitacionCara,futureReservationDate, hotelsFixture.passenger, hotelsFixture.somePaymentMethod).register();
     }
 
     @Test
@@ -43,11 +44,7 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
     }
 
     @Test
-    public void aPassangerCanSearchAllHisFutureReservationsGivenACurrentDate() {
-
-        RoomReservation futureReservation = new RoomReservation(hotelsFixture.habitacionCara,futureReservationDate, hotelsFixture.passenger, hotelsFixture.somePaymentMethod);
-        futureReservation.register();
-
+    public void aPassengerCanSearchAllHisFutureReservationsGivenACurrentDate() {
         SearchResult<RoomReservation> result =
                 Search.over(hotelsFixture).select(reservations).where(
                         belongsTo(hotelsFixture.passenger).and(isAfter(today))
@@ -59,9 +56,7 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
     }
 
     @Test
-    public void aPassangerCanSearchAllHisCurrentReservations() {
-        new RoomReservation(hotelsFixture.habitacionCara,futureReservationDate, hotelsFixture.passenger, hotelsFixture.somePaymentMethod).register();
-
+    public void aPassengerCanSearchAllHisCurrentReservations() {
         SearchResult<RoomReservation> result =
                 Search.over(hotelsFixture).select(reservations).where(
                         belongsTo(hotelsFixture.passenger).and(includesDay(today))
@@ -71,5 +66,15 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
         assertEquals(1, result.items().size());
     }
 
+    @Test
+    public void aPassengerCanSearchAllHisReservationsForAGivenCity() {
+        SearchResult<RoomReservation> result =
+                Search.over(hotelsFixture).select(reservations).where(
+                        belongsTo(hotelsFixture.passenger).and(isLocatedAt("Carlos Paz"))
+                );
+
+        assertEquals(futureReservation, result.items().stream().findFirst().get());
+        assertEquals(1, result.items().size());
+    }
 
 }

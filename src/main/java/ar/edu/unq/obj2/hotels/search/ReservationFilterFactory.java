@@ -20,4 +20,8 @@ public class ReservationFilterFactory {
         return (roomReservation) -> roomReservation.getRange().includes(aDate);
     }
 
+    public static Predicate<RoomReservation> isLocatedAt(String aCity) {
+        return (roomReservation) -> roomReservation.getHotel().isLocatedAt(aCity);
+    }
+
 }

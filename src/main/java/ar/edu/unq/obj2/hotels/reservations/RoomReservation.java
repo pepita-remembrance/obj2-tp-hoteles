@@ -47,9 +47,10 @@ public class RoomReservation {
         return room.getHotel();
     }
 
-    public void register(){
+    public RoomReservation register(){
         room.addReservation(this);
         sendAllNotifications();
+        return this;
     }
 
     public void addNotifier(Notifier<RoomReservation> notifier){

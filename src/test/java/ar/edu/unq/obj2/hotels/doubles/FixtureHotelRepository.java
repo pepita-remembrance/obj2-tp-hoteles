@@ -22,7 +22,7 @@ public interface FixtureHotelRepository extends HotelRepositoryProvider {
         public final DayRange overlappingDateRange   = new DayRange(LocalDate.of(2015, 12, 15), LocalDate.of(2015, 12, 28));
         public final PaymentMethod somePaymentMethod = new PaymentMethod();
 
-        public final Hotel hotelMirador = new Hotel("Mirador", new Location("AR", "", ""))
+        public final Hotel hotelMirador = new Hotel("Mirador", new Location("AR", "Carlos Paz", ""))
                 .addBasicRoom(4, 80)
                 .addBasicRoom(3, 50)
                 .addBasicRoom(2, 30)
