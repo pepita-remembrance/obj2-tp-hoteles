@@ -1,6 +1,6 @@
 ## Diseño
 
-   ![Diagrama de clases](/documentation/class_diagram.png)
+   ![Diagrama de clases](/documentation/class_diagram_hierarchy.png)
 
 ## Interface Dependency Injection (o Thin Cake Pattern)
 
@@ -57,7 +57,8 @@ El search realiza la búsqueda sobre un repository, y filtra utilizando `Predica
 
 ```java
 Search.over(hotelsFixture)
-        .by(nameFilter("Barato").or(locationFilter("Antartida")));
+        .select(rooms)
+        .where(nameFilter("Barato").or(locationFilter("Antartida")));
 ```
 
 ![Predicate](/documentation/predicate.jpg)
@@ -72,12 +73,14 @@ Por ejempo:
     }
 ```
 
-Agregando una parametrización de tipos al Search, es posible reutilizarlo para diferentes repositories:
+Agregando una parametrización de tipos al Search, es posible reutilizarlo para diferentes entidades:
 
 
 ```java
-Search.over(reservationsRepository)
-        .by(cityFilter("Bs As"));
+    Search.over(hotelsRepository)
+        .select(reservations)
+        .where(belongsTo(hotelsFixture.passenger))
+        .groupedBy(city);
 ```
 
 La aplicación de los predicados sigue un patrón Composite, ya que pueden componerse jerárquicamente, gracias a que el
@@ -88,6 +91,33 @@ resultado de componer dos predicados es siempre otro predicado del mismo tipo
  - **Liskov substitution:** Dos predicados del mismo tipo son siempre intercambiables.
  - **Interface segregation:** La interfaz se mantiene minimalista y sólo contiene mensajes relacionados con su responsabilidad.
  - **Dependency inversion:** El tipo paramétrico de `Predicate<T>` permite generalizar el predicado para cualquier tipo, delegando la decisión en sus implementaciones.
+
+### Search builder
+
+Ademaś de poder componer el filtro, es posible construir la búsqueda indicando qué entidad se
+está buscando (por ejemplo, si es una habitación, un hotel, una ciudad, etc.), cómo se quiere proyectar el resultado,
+(por ejemplo, si de las habitaciones sólo se quieren los precios, o si de los hoteles sólo se quieren las ciudades), y también
+se pueden agrupar los resultados (por ejemplo, habitaciones agrupadas por hotel, o por ciudad, etc).
+
+Para ello se crea un builder utilizando `inner tested classes`, de manera tal que las `inner classes` tengan acceso a la clase
+que las envuelve, facilitando así la construcción del builder. En particular, al enviar el mensaje `select` a la clase `Search`,
+se obtiene una instancia de la clase interna `ProjectionalSearch` que, también entiende el mensaje `where`, pero cuya implementación
+proyecta primero las entidades determinadas en el extractor enviado como parámetro al `select`.
+
+
+Esto permite búsquedas complejas fácilmente extensibles, como ser:
+
+
+```java
+    //Se utiliza el repositorio de hoteles, pero podría haber sido un repositorio de cualquier tipo
+    Search.over(hotelsRepository)
+        //Del hotel solo nos interesan las reservas
+        .select(reservations)
+        //De las reservas, únicamente nos interesan las que correspondan a cierto pasajero
+        // y se encuentren ubicadas en la ciudad de Carlos Paz
+        .where(belongsTo(passenger).and(isLocatedAt("Carlos Paz")))
+        .items()
+```
 
 
 ## Notificaciones de nuevas reservas

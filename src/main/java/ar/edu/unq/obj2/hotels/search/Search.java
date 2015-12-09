@@ -21,6 +21,10 @@ public class Search<T> {
         return new ProjectionalSearch<>(extractor);
     }
 
+    public SearchResult<T> where(Predicate<T> condition) {
+        return new SearchResult<>(getAll().filter(condition));
+    }
+
     public Stream<T> getAll() {
         return repository.all().stream();
     }
