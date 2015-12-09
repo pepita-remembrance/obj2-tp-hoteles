@@ -16,4 +16,8 @@ public class ReservationFilterFactory {
         return (roomReservation) -> roomReservation.getRange().getFirst().isAfter(aDate);
     }
 
+    public static Predicate<RoomReservation> includesDay(LocalDate aDate) {
+        return (roomReservation) -> roomReservation.getRange().includes(aDate);
+    }
+
 }

@@ -18,6 +18,8 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
 
     Room roomToReserve;
     EmailSender emailSender;
+    private final LocalDate today = LocalDate.of(2015, 12, 25);
+    private final DayRange  futureReservationDate = new DayRange(LocalDate.of(2016, 1, 1), LocalDate.of(2016, 1, 25));
 
 
     @Override
@@ -38,13 +40,10 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
                 Search.over(hotelsFixture).select(reservations).where(belongsTo(hotelsFixture.passenger));
 
         assertEquals(hotelsFixture.someReservation, result.items().stream().findFirst().get());
-
     }
 
     @Test
-    public void aPassangerCanSearchAlFutureReservationsGivenACurrentDate() {
-        DayRange  futureReservationDate = new DayRange(LocalDate.of(2016, 1, 1), LocalDate.of(2016, 1, 25));
-        LocalDate today = LocalDate.of(2015, 12, 25);
+    public void aPassangerCanSearchAllHisFutureReservationsGivenACurrentDate() {
 
         RoomReservation futureReservation = new RoomReservation(hotelsFixture.habitacionCara,futureReservationDate, hotelsFixture.passenger, hotelsFixture.somePaymentMethod);
         futureReservation.register();
@@ -55,9 +54,22 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
                 );
 
         assertEquals(futureReservation, result.items().stream().findFirst().get());
+        assertEquals(1, result.items().size());
 
     }
 
+    @Test
+    public void aPassangerCanSearchAllHisCurrentReservations() {
+        new RoomReservation(hotelsFixture.habitacionCara,futureReservationDate, hotelsFixture.passenger, hotelsFixture.somePaymentMethod).register();
+
+        SearchResult<RoomReservation> result =
+                Search.over(hotelsFixture).select(reservations).where(
+                        belongsTo(hotelsFixture.passenger).and(includesDay(today))
+                );
+
+        assertEquals(hotelsFixture.someReservation, result.items().stream().findFirst().get());
+        assertEquals(1, result.items().size());
+    }
 
 
 }
