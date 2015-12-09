@@ -4,20 +4,16 @@ import ar.edu.unq.obj2.hotels.notifications.EmailSender;
 import ar.edu.unq.obj2.hotels.notifications.senders.DummyEmailSenderProvider;
 import ar.edu.unq.obj2.hotels.reservations.RoomReservation;
 import ar.edu.unq.obj2.hotels.search.Search;
-import ar.edu.unq.obj2.hotels.search.SearchResult;
-import static org.junit.Assert.*;
-
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
-import static ar.edu.unq.obj2.hotels.search.ReservationFilterFactory.*;
-import static ar.edu.unq.obj2.hotels.search.ProjectionsFactory.*;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
+
+import static ar.edu.unq.obj2.hotels.search.ProjectionsFactory.city;
+import static ar.edu.unq.obj2.hotels.search.ProjectionsFactory.reservations;
+import static ar.edu.unq.obj2.hotels.search.ReservationFilterFactory.*;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.junit.Assert.assertThat;
 
 public class ReservationsAdministrationTest extends BasicHotelsTest implements DummyEmailSenderProvider {
 
@@ -43,57 +39,69 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
 
     @Test
     public void aPassengerCanSearchForHisReservations() {
-        SearchResult<RoomReservation> result =
-                Search.over(hotelsFixture).select(reservations).where(belongsTo(hotelsFixture.passenger));
 
-        assertThat(result.items(), CoreMatchers.hasItems(hotelsFixture.someReservation, futureReservation));
+        assertThat(
+
+            Search.over(hotelsFixture)
+                .select(reservations)
+                .where(belongsTo(hotelsFixture.passenger))
+                .items()
+
+        , hasItems(hotelsFixture.someReservation, futureReservation));
     }
 
     @Test
     public void aPassengerCanSearchAllHisFutureReservationsGivenACurrentDate() {
-        SearchResult<RoomReservation> result =
-                Search.over(hotelsFixture).select(reservations).where(
-                        belongsTo(hotelsFixture.passenger).and(isAfter(today))
-                );
 
-        assertEquals(futureReservation, result.items().stream().findFirst().get());
-        assertEquals(1, result.items().size());
+        assertThat(
 
+            Search.over(hotelsFixture)
+                .select(reservations)
+                .where(belongsTo(hotelsFixture.passenger).and(isAfter(today)))
+                .items()
+
+        , hasItems(futureReservation));
     }
 
     @Test
     public void aPassengerCanSearchAllHisCurrentReservations() {
-        SearchResult<RoomReservation> result =
-                Search.over(hotelsFixture).select(reservations).where(
-                        belongsTo(hotelsFixture.passenger).and(includesDay(today))
-                );
 
-        assertEquals(hotelsFixture.someReservation, result.items().stream().findFirst().get());
-        assertEquals(1, result.items().size());
+        assertThat(
+
+            Search
+                .over(hotelsFixture)
+                .select(reservations)
+                .where(belongsTo(hotelsFixture.passenger).and(includesDay(today)))
+                .items()
+
+        , hasItems(hotelsFixture.someReservation));
     }
 
     @Test
     public void aPassengerCanSearchAllHisReservationsForAGivenCity() {
-        SearchResult<RoomReservation> result =
-                Search.over(hotelsFixture).select(reservations).where(
-                        belongsTo(hotelsFixture.passenger).and(isLocatedAt("Carlos Paz"))
-                );
 
-        assertEquals(futureReservation, result.items().stream().findFirst().get());
-        assertEquals(1, result.items().size());
+        assertThat(
+
+            Search.over(hotelsFixture)
+                .select(reservations)
+                .where(belongsTo(hotelsFixture.passenger).and(isLocatedAt("Carlos Paz")))
+                .items()
+
+        , hasItems(futureReservation));
     }
 
     @Test
     public void aPassengerCanSearchForTheCitiesWhereHeHasAReservation() {
 
-        Set<String> result =
-                Search.over(hotelsFixture)
-                    .select(reservations)
-                    .where(belongsTo(hotelsFixture.passenger))
-                    .groupedBy(city)
-                    .keySet();
+        assertThat(
 
-        assertThat(result, CoreMatchers.hasItems("Carlos Paz", "Sourigues"));
+            Search.over(hotelsFixture)
+                .select(reservations)
+                .where(belongsTo(hotelsFixture.passenger))
+                .groupedBy(city)
+                .keySet()
+
+        ,hasItems("Carlos Paz", "Sourigues"));
     }
 
 

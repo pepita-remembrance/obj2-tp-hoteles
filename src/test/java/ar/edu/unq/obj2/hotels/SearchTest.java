@@ -3,6 +3,7 @@ package ar.edu.unq.obj2.hotels;
 import ar.edu.unq.obj2.hotels.notifications.senders.DummyEmailSenderProvider;
 import ar.edu.unq.obj2.hotels.search.Search;
 import ar.edu.unq.obj2.hotels.search.SearchResult;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import java.util.Collection;
