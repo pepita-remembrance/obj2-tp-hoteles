@@ -3,7 +3,10 @@ package ar.edu.unq.obj2.hotels;
 import ar.edu.unq.obj2.hotels.notifications.EmailSender;
 import ar.edu.unq.obj2.hotels.notifications.senders.DummyEmailSenderProvider;
 import ar.edu.unq.obj2.hotels.payments.PaymentMethod;
+import ar.edu.unq.obj2.hotels.reservations.RoomReservation;
 import ar.edu.unq.obj2.hotels.search.Search;
+import ar.edu.unq.obj2.hotels.search.SearchResult;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import static ar.edu.unq.obj2.hotels.search.ReservationFilterFactory.*;
@@ -14,9 +17,6 @@ import java.time.LocalDate;
 public class ReservationsAdministrationTest extends BasicHotelsTest implements DummyEmailSenderProvider {
 
     Room roomToReserve;
-    final DayRange someDateRange          = new DayRange(LocalDate.of(2015, 12, 24), LocalDate.of(2015, 12, 26));
-    final DayRange overlappingDateRange   = new DayRange(LocalDate.of(2015, 12, 15), LocalDate.of(2015, 12, 28));
-    final PaymentMethod somePaymentMethod = new PaymentMethod();
     EmailSender emailSender;
 
 
@@ -34,7 +34,11 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
 
     @Test
     public void aPassengerCanSearchForHisReservations() {
-        Search.over(hotelsFixture).select(reservations).where(belongsTo(hotelsFixture.passenger));
+        SearchResult<RoomReservation> result =
+                Search.over(hotelsFixture).select(reservations).where(belongsTo(hotelsFixture.passenger));
+
+        assertEquals(hotelsFixture.someReservation, result.items().stream().findFirst().get());
+
     }
 
 
