@@ -28,7 +28,7 @@ public interface FixtureHotelRepository extends HotelRepositoryProvider {
                 .addBasicRoom(2, 30)
                 ;
 
-        public final Hotel hotelBarato = new Hotel("El Barato", new Location("AR", "", ""))
+        public final Hotel hotelBarato = new Hotel("El Barato", new Location("AR", "Sourigues", ""))
                 .addBasicRoom(8,20)
                 .addBasicRoom(6,15)
                 .addBasicRoom(7, 15)

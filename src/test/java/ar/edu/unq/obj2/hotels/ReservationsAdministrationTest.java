@@ -6,12 +6,18 @@ import ar.edu.unq.obj2.hotels.reservations.RoomReservation;
 import ar.edu.unq.obj2.hotels.search.Search;
 import ar.edu.unq.obj2.hotels.search.SearchResult;
 import static org.junit.Assert.*;
+
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import static ar.edu.unq.obj2.hotels.search.ReservationFilterFactory.*;
 import static ar.edu.unq.obj2.hotels.search.ProjectionsFactory.*;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 
 public class ReservationsAdministrationTest extends BasicHotelsTest implements DummyEmailSenderProvider {
 
@@ -40,7 +46,7 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
         SearchResult<RoomReservation> result =
                 Search.over(hotelsFixture).select(reservations).where(belongsTo(hotelsFixture.passenger));
 
-        assertEquals(hotelsFixture.someReservation, result.items().stream().findFirst().get());
+        assertThat(result.items(), CoreMatchers.hasItems(hotelsFixture.someReservation, futureReservation));
     }
 
     @Test
@@ -76,5 +82,20 @@ public class ReservationsAdministrationTest extends BasicHotelsTest implements D
         assertEquals(futureReservation, result.items().stream().findFirst().get());
         assertEquals(1, result.items().size());
     }
+
+    @Test
+    public void aPassengerCanSearchForTheCitiesWhereHeHasAReservation() {
+
+        Set<String> result =
+                Search.over(hotelsFixture)
+                    .select(reservations)
+                    .where(belongsTo(hotelsFixture.passenger))
+                    .groupedBy(city)
+                    .keySet();
+
+        assertThat(result, CoreMatchers.hasItems("Carlos Paz", "Sourigues"));
+    }
+
+
 
 }

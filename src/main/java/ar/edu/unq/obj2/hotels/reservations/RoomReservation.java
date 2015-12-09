@@ -1,9 +1,6 @@
 package ar.edu.unq.obj2.hotels.reservations;
 
-import ar.edu.unq.obj2.hotels.DayRange;
-import ar.edu.unq.obj2.hotels.Hotel;
-import ar.edu.unq.obj2.hotels.Passenger;
-import ar.edu.unq.obj2.hotels.Room;
+import ar.edu.unq.obj2.hotels.*;
 import ar.edu.unq.obj2.hotels.notifications.Email;
 import ar.edu.unq.obj2.hotels.notifications.EmailSender;
 import ar.edu.unq.obj2.hotels.notifications.Notifier;
@@ -12,7 +9,7 @@ import ar.edu.unq.obj2.hotels.payments.PaymentMethod;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class RoomReservation {
+public class RoomReservation implements WithLocation {
     private final DayRange range;
     private final Room room;
     private final Passenger owner;
@@ -46,6 +43,8 @@ public class RoomReservation {
     public Hotel getHotel() {
         return room.getHotel();
     }
+
+    public Location getLocation(){ return getHotel().getLocation();}
 
     public RoomReservation register(){
         room.addReservation(this);

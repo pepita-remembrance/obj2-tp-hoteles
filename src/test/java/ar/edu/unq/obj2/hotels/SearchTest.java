@@ -5,10 +5,14 @@ import ar.edu.unq.obj2.hotels.search.Search;
 import ar.edu.unq.obj2.hotels.search.SearchResult;
 import org.junit.Test;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import static org.hamcrest.CoreMatchers.*;
 import static ar.edu.unq.obj2.hotels.search.RoomFilterFactory.locationLike;
 import static ar.edu.unq.obj2.hotels.search.RoomFilterFactory.nameLike;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static ar.edu.unq.obj2.hotels.search.ProjectionsFactory.*;
 
 public class SearchTest extends BasicHotelsTest implements
@@ -16,13 +20,13 @@ public class SearchTest extends BasicHotelsTest implements
 
     @Test
     public void searchByName() {
-        SearchResult<Room> searchResult =
+        Collection<Room> cheapRooms =
                 Search.over(hotelsFixture)
                         .select(rooms)
-                        .where(nameLike("Barato"));
+                        .where(nameLike("Barato"))
+                        .items();
 
-        assertTrue(searchResult.groupedBy(Room::getHotel).containsKey(hotelsFixture.hotelBarato));
-        assertEquals(4, searchResult.items().size());
+        assertThat(cheapRooms, hasItems(hotelsFixture.hotelBarato.getRooms().toArray(new Room[5])));
     }
 
     @Test
@@ -30,7 +34,7 @@ public class SearchTest extends BasicHotelsTest implements
         SearchResult<Room> searchResult =
                 Search.over(hotelsFixture)
                         .select(rooms)
-                        .where(nameLike("Barato").or(locationLike("Antartida")) );
+                        .where(nameLike("Barato").or(locationLike("Antartida")));
 
         assertTrue(searchResult.groupedBy(Room::getHotel).containsKey(hotelsFixture.hotelBarato));
         assertTrue(searchResult.groupedBy(Room::getHotel).containsKey(hotelsFixture.hotelLejano));

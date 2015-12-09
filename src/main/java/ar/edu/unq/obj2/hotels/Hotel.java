@@ -2,6 +2,7 @@ package ar.edu.unq.obj2.hotels;
 
 import ar.edu.unq.obj2.hotels.amenities.Amenity;
 import ar.edu.unq.obj2.hotels.payments.PaymentMethod;
+import ar.edu.unq.obj2.hotels.reservations.WithLocation;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class Hotel {
+public class Hotel implements WithLocation {
     private String name;
     private Location location;
     private Contact contactInformation;

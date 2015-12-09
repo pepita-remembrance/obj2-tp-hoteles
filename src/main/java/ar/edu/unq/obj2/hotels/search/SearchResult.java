@@ -17,7 +17,7 @@ public class SearchResult<T> {
         this.items = rooms.collect(Collectors.toList());
     }
 
-    public<R> Map<R,List<T>> groupedBy(Function<T,R> relation){
+    public<R> Map<R,List<T>> groupedBy(Function<? super T,R> relation){
         return items.stream().collect(Collectors.groupingBy(relation));
     }
 
